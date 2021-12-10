@@ -1,0 +1,64 @@
+apply plugin: 'java'
+apply plugin: 'application'
+
+
+
+wrapper {
+    distributionType = Wrapper.DistributionType.ALL
+    gradleVersion = "${project.gradleVersion}"
+}
+
+buildscript {
+    repositories {
+        jcenter()
+    }
+
+}
+
+
+allprojects {
+
+    repositories {
+        //本地仓库
+        mavenLocal()
+        //maven中心仓库
+        mavenCentral()
+        //JFrog的maven仓库
+        jcenter()
+    }
+}
+
+dependencies {
+
+    implementation 'org.apache.logging.log4j:log4j-core:2.13.3'
+//    implementation 'org.apache.logging.log4j:log4j-api:2.13.3'
+//    implementation 'org.springframework.boot:spring-boot-starter-logging:2.3.6.RELEASE'
+
+}
+
+
+// java编译的时候缺省状态下会因为中文字符而失败
+[compileJava, compileTestJava, javadoc]*.options*.encoding = 'UTF-8'
+
+/**
+ * SourceSets: 指定资源路径
+ */
+// 指定groovy编译路径,不指定groovy类不会编译
+sourceSets {
+    main {
+        java {
+            //不要编译两次，否则build时，如果java依赖了groovy则会报找不到符号
+            srcDirs = ['src/main/java']
+        }
+    }
+}
+
+
+//    sourceSets.main.groovy.srcDirs = ["src/main/java"]
+//    sourceSets.main.java.srcDirs = ["src/main/java"]
+// 将groovy的代码也编译到java目录下
+sourceSets.main.java.outputDir = file("./build/classes/java/main")
+//定义resource目录，最终编译跟class目录放同级目录
+sourceSets.main.resources.srcDirs = ["src/main/resources"]
+//resources编译目录，跟class目录放同级
+//    sourceSets.main.output.resourcesDir = file("./build/classes/java/main/java")

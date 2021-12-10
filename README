@@ -1,0 +1,2 @@
+#获取jar包
+gradle build
