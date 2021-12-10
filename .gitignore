@@ -14,7 +14,6 @@ sog-pmd-msg-cache.txt
 .idea
 # Package Files #
 build/
-*.jar
 *.war
 *.nar
 *.ear
